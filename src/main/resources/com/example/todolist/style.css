@@ -1,0 +1,67 @@
+/* Ana panelin arka planı ve iç boşlukları */
+.root {
+    -fx-background-color: #f4f6f9;
+    -fx-padding: 20;
+}
+
+/* Metin giriş alanı (TextField) */
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 8;
+    -fx-padding: 8 12;
+    -fx-font-size: 14px;
+    -fx-text-fill: #495057;
+}
+.text-field:focused {
+    -fx-border-color: #4dabf7; /* Tıklandığında mavi çerçeve */
+}
+
+/* Butonların genel tasarımı */
+.button {
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 8 16;
+}
+
+/* Ekle Butonu (Yeşil modern ton) */
+.button-ekle {
+    -fx-background-color: #2b8a3e;
+    -fx-text-fill: white;
+}
+.button-ekle:hover {
+    -fx-background-color: #237032; /* Üzerine gelince koyulaşır */
+}
+
+/* Sil Butonu (Kırmızı/Turuncu modern ton) */
+.button-sil {
+    -fx-background-color: #e03131;
+    -fx-text-fill: white;
+}
+.button-sil:hover {
+    -fx-background-color: #c92a2a;
+}
+
+/* Liste alanı (ListView) */
+.list-view {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: #e9ecef;
+    -fx-border-radius: 8;
+    -fx-padding: 5;
+}
+
+/* Liste içindeki her bir görev satırı */
+.list-cell {
+    -fx-background-color: white;
+    -fx-text-fill: #343a40;
+    -fx-padding: 8;
+    -fx-font-size: 14px;
+}
+.list-cell:filled:selected {
+    -fx-background-color: #e7f5ff; /* Seçili satırın arka planı */
+    -fx-text-fill: #1c7ed6;        /* Seçili satırın yazı rengi */
+}
