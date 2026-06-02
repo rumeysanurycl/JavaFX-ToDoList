@@ -1,6 +1,6 @@
 [✔] study calculus (2026-05-23)
-[ ] submit the assignment (2026-05-30)
-[ ] make a hospital appointment (2026-05-24) [OVERDUE!]
+[✔] make a hospital appointment (2026-05-24)
 [ ] shop (2026-05-25) [OVERDUE!]
-[ ] read a book (2026-05-24) [OVERDUE!]
-[ ] physics homework (Part 2) (2026-05-31)
+[ ] read a book (2026-06-01) [TODAY!]
+[✔] physics homework(part 2) (2026-06-02)
+[ ] submit this assignment (2026-06-08)

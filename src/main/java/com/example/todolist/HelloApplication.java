@@ -18,7 +18,7 @@ import java.time.LocalDate;
 
 public class HelloApplication extends Application {
 
-    //Files and Streams (plain text record file)
+    // Files and Streams (plain text record file)
     private static final String FILE_PATH = "tasks.txt";
     private ObservableList<String> taskList = FXCollections.observableArrayList();
 
@@ -30,7 +30,7 @@ public class HelloApplication extends Application {
         // 2. Dynamically monitor dates and alerts.
         checkReminders();
 
-        // Basic GUI Components
+        // Basic GUI Components (Standard JavaFX)
         ListView<String> listView = new ListView<>(taskList);
 
         TextField taskInput = new TextField();
@@ -44,16 +44,6 @@ public class HelloApplication extends Application {
 
         Button addButton = new Button("Add");
         Button deleteButton = new Button("Delete Selected");
-
-        // CSS Styling (Font sizes and Placeholder color)
-        listView.setStyle("-fx-font-size: 16px; -fx-background-radius: 5;");
-
-        // The tooltip text color has been set to #95a5a6 (dark soft gray).
-        taskInput.setStyle("-fx-font-size: 15px; -fx-background-radius: 5; -fx-border-color: #bdc3c7; -fx-prompt-text-fill: #7f8c8d; -fx-opacity: 1.0;");
-        timePicker.setStyle("-fx-font-size: 15px; -fx-background-radius: 5; -fx-border-color: #bdc3c7;");
-
-        addButton.setStyle("-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15px; -fx-background-radius: 5;");
-        deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px; -fx-background-radius: 5;");
         deleteButton.setMaxWidth(Double.MAX_VALUE);
 
         // --- TASK ADDITION LOGIC AND INPUT VALIDATION ---
@@ -122,10 +112,9 @@ public class HelloApplication extends Application {
             }
         });
 
-        // Layout Panes
+        // Layout Panes (Plain Alignment)
         HBox inputPanel = new HBox(10, taskInput, timePicker, addButton);
         VBox mainPanel = new VBox(15, inputPanel, listView, deleteButton);
-        mainPanel.setStyle("-fx-padding: 15; -fx-background-color: #f5f6fa;");
 
         Scene scene = new Scene(mainPanel, 500, 500);
         primaryStage.setTitle("To-Do List Application");
@@ -147,34 +136,30 @@ public class HelloApplication extends Application {
                 if (task.contains(today.toString()) && !task.contains("[TODAY!]")) {
                     taskList.set(i, task + " [TODAY!]");
                 }
-                // 2. Condition: Historical data verification (Secure system that prevents duplicate label printing)
+                // 2. Condition: Historical data verification
                 else {
                     try {
-                        // By temporarily clearing potential alerts, we always lock the history to the very end.
                         String cleanTask = task.replace(" [TODAY!]", "").replace(" [OVERDUE!]", "");
                         int len = cleanTask.length();
 
                         if (cleanTask.endsWith(")")) {
-                            // We safely extract the 10 characters before the final closing parenthesis.
                             String dateStr = cleanTask.substring(len - 11, len - 1);
                             LocalDate taskDate = LocalDate.parse(dateStr);
 
-                            // If the mission date is before today and there is already no [OVERDUE!] warning
                             if (taskDate.isBefore(today) && !task.contains("[OVERDUE!]")) {
-                                // We are completely removing the old [TODAY!] warning from the text and replacing it with [OVERDUE!].
                                 String safeTask = task.replace(" [TODAY!]", "");
                                 taskList.set(i, safeTask + " [OVERDUE!]");
                             }
                         }
                     } catch (Exception e) {
-                        // Prevent the program from crashing if a conversion error occurs. (Exception Handling)
+                        // Exception Handling
                     }
                 }
             }
         }
     }
 
-    //BufferedWriter and Exception Handling (Save plain text)
+    // BufferedWriter and Exception Handling (Save plain text)
     private void saveTasksToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
             for (String task : taskList) {
@@ -186,7 +171,7 @@ public class HelloApplication extends Application {
         }
     }
 
-    //Reading from a File with BufferedReader
+    // Reading from a File with BufferedReader
     private void loadTasksFromFile() {
         File file = new File(FILE_PATH);
         if (!file.exists()) return;
