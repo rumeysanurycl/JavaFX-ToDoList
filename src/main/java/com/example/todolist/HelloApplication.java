@@ -9,12 +9,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.util.Optional; // Şifre penceresinin buton kontrolü için paket
 
 public class HelloApplication extends Application {
 
@@ -24,6 +26,37 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        // --- SECURE LOGIN WINDOW (PASSWORD CHECK) ---
+        boolean isAuthorized = false;
+
+        while (!isAuthorized) {
+            TextInputDialog passwordDialog = new TextInputDialog();
+            passwordDialog.setTitle("Login Required");
+            passwordDialog.setHeaderText("To-Do List Secure Authentication");
+            passwordDialog.setContentText("Please enter the application password:");
+
+            // Eğer kullanıcı iptal butonuna basarsa veya pencereyi kapatırsa uygulamayı tamamen kapat
+            Optional<String> result = passwordDialog.showAndWait();
+            if (!result.isPresent()) {
+                System.exit(0);
+            }
+
+            String enteredPassword = result.get().trim();
+
+            // Giriş şifresini "1234" olarak belirledik
+            if (enteredPassword.equals("1234")) {
+                isAuthorized = true; // Şifre doğru, döngü sonlanır ve ana ekran açılır
+            } else {
+                // Şifre yanlışsa hata mesajı gösterir
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Error");
+                errorAlert.setHeaderText("Invalid Password!");
+                errorAlert.setContentText("The password you entered is incorrect. Please try again!");
+                errorAlert.showAndWait();
+            }
+        }
+
+        // --- MAIN APPLICATION LOGIC (Şifre doğruysa burası devreye girer) ---
         // 1. Load old tasks from file when the application opens.
         loadTasksFromFile();
 
@@ -67,7 +100,7 @@ public class HelloApplication extends Application {
                 checkReminders();
                 saveTasksToFile();
             } else {
-                // Warning window that will appear when an empty task is entered
+                // Boş görev girildiğinde uyarı penceresi
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning");
                 alert.setHeaderText("Empty Task!");
@@ -89,7 +122,7 @@ public class HelloApplication extends Application {
             }
         });
 
-        // (MouseEvent): To check/uncheck when double-clicked.
+        // (MouseEvent): Çift tıklandığında görevi tamamlandı/tamamlanmadı yapar.
         listView.setOnMouseClicked(e -> {
             if (e.getClickCount() == 2) {
                 int selectedIndex = listView.getSelectionModel().getSelectedIndex();
@@ -112,7 +145,7 @@ public class HelloApplication extends Application {
             }
         });
 
-        // Layout Panes (Plain Alignment)
+        // Layout Panes (Sade Hizalama)
         HBox inputPanel = new HBox(10, taskInput, timePicker, addButton);
         VBox mainPanel = new VBox(15, inputPanel, listView, deleteButton);
 
@@ -129,14 +162,10 @@ public class HelloApplication extends Application {
         for (int i = 0; i < taskList.size(); i++) {
             String task = taskList.get(i);
 
-            // Only check for incomplete tasks.
             if (task.startsWith("[ ] ")) {
-
-                // 1. Condition: If the date is today and there is no alert, add [TODAY!]
                 if (task.contains(today.toString()) && !task.contains("[TODAY!]")) {
                     taskList.set(i, task + " [TODAY!]");
                 }
-                // 2. Condition: Historical data verification
                 else {
                     try {
                         String cleanTask = task.replace(" [TODAY!]", "").replace(" [OVERDUE!]", "");
